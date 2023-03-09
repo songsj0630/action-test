@@ -1,0 +1,46 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REMOTE_SSH_HOST: example.com
+  REMOTE_SSH_PORT: 22
+  REMOTE_SSH_USER: deploy
+  REMOTE_SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+  REMOTE_APP_PATH: /var/www/html
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y sshpass
+          pip install -r requirements.txt
+
+      - name: Build and Test
+        run: |
+          python manage.py collectstatic --noinput
+          pytest
+
+      - name: Deploy Code
+        uses: easingthemes/ssh-deploy@v2.3.1
+        with:
+          ssh_private_key: ${{ env.REMOTE_SSH_PRIVATE_KEY }}
+          ssh_username: ${{ env.REMOTE_SSH_USER }}
+          remote_host: ${{ env.REMOTE_SSH_HOST }}
+          remote_port: ${{ env.REMOTE_SSH_PORT }}
+          local_path: ./
+          remote_path: ${{ env.REMOTE_APP_PATH }}
+          exclude: |
+            .git/*
+            .github/*
+            *.pyc
+            __pycache__/
+          args: "-rltgoDzvO --no-perms"
