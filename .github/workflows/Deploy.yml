@@ -25,13 +25,13 @@ jobs:
     - name: Deploy to server
       uses: easingthemes/ssh-deploy@v3.0.0
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh-private-key: ${{ seongjae0630 }}
         args: |
           --delete
           --exclude 'node_modules'
           --exclude '.env'
         host: 192.168.100.80
-        username: songsj0630
+        username: root
         port: 22
         local-path: './dist'
         remote-path: '/var/www/html'
