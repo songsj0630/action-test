@@ -1,33 +1,37 @@
-name: Deploy to Server
+name: deploy
+
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  deploy:
+  build:
     runs-on: centos-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2.4.2
 
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        sudo yum update
+        sudo yum install -y python3-pip
+        pip3 install -r requirements.txt
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+    - name: Build and test
+      run: |
+        python3 build.py
+        python3 test.py
 
-      - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@v3.0.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          remote-user: ${{ secrets.SERVER_USERNAME }}
-          hostname: ${{ secrets.SERVER_IP }}
-          port: ${{ secrets.SERVER_PORT }}
-          local-path: .
-          remote-path: /etc/ansible
-          exclude: |
-            exclude_pattern_1
-            exclude_pattern_2
+    - name: Deploy to server
+      uses: easingthemes/ssh-deploy@v3.0.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        args: |
+          --delete
+          --exclude 'node_modules'
+          --exclude '.env'
+        host: 192.168.100.80
+        username: songsj0630
+        port: 22
+        local-path: './dist'
+        remote-path: '/var/www/html'
