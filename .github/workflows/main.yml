@@ -1,0 +1,40 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Generate SSH key
+      run: ssh-keygen -t rsa -b 4096 -f ./deploy_key -N ""
+
+    - name: Add SSH key to agent
+      uses: webfactory/ssh-agent@v0.4.1
+      with:
+        ssh-private-key: ./deploy_key
+
+    - name: Register server SSH key
+      run: ssh-keyscan -p 22 192.168.100.80 >> ~/.ssh/known_hosts
+
+    - name: SSH into server and deploy code
+      run: |
+        ssh username@192.168.100.80 -p 22 '
+          sudo cp -R /var/www/html /var/www/html_backup_$(date +%Y-%m-%d_%H-%M-%S)
+          sudo rm -rf /var/www/html/*
+        '
+        scp -r ./* username@192.168.100.80:/var/www/html/
+        ssh username@192.168.100.80 -p 22 '
+          sudo chown -R www-data:www-data /var/www/html
+          sudo service apache2 restart
+        '
