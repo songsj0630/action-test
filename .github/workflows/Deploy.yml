@@ -27,7 +27,7 @@ jobs:
           hostname: ${{ secrets.SERVER_IP }}
           port: ${{ secrets.SERVER_PORT }}
           local-path: .
-          remote-path: /path/to/remote/directory
+          remote-path: /etc/ansible
           exclude: |
             exclude_pattern_1
             exclude_pattern_2
