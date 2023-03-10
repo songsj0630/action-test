@@ -1,35 +1,25 @@
-name: DEPLOY
+name: Deploy to Rocky OS
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    name: Build
-    # The type of runner that the job will run on
+  deploy:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: chechout
-        uses: actions/checkout@v3.2.0
-        
-      - name: test_ssh
-        uses: ./
-        with:
-          host: ${{ secrets.MY_HOST }}
-          username: ${{ secrets.MY_USERNAME }}
-          password: ${{ secrets.MY_PASS }}
-          key: ${{ secrets.MY_SSH }}
-          port: ${{ secrets.MY_PORT }}
-          script: whoami
+    - uses: actions/checkout@v2.4.2
+
+    - name: Deploy to server
+      uses: easingthemes/ssh-deploy@v2.2.12
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.MY_SSH }}
+        ARGS: "-rltgoDzvO --delete" # Optional, pass additional arguments to rsync
+      with:
+        server: ${{ secrets.MY_HOST }}
+        username: ${{ secrets.MY_USERNAME }}
+        port: ${{ secrets.MY_PORT }}
+        remote_path: ${{ secrets.REMOTE_PATH }}
+     
