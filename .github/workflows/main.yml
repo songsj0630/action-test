@@ -17,6 +17,7 @@ jobs:
       env:
         SSH_PRIVATE_KEY: ${{ secrets.MY_SSH }}
         ARGS: "-rltgoDzvO --delete" # Optional, pass additional arguments to rsync
+        SSH_DEPLOY_DEBUG: true
       with:
        REMOTE_HOST: ${{ secrets.MY_HOST }}
        REMOTE_USER: ${{ secrets.MY_USERNAME }}
