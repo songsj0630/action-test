@@ -21,9 +21,6 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: 18
-        uses: actions/chechout@v3.2.0
-        
       - name:
         uses: ./
         with:
