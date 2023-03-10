@@ -23,6 +23,6 @@ jobs:
        REMOTE_USER: ${{ secrets.MY_USERNAME }}
        REMOTE_PORT: ${{ secrets.MY_PORT }}
        SSH_PRIVATE_KEY: ${{ secrets.MY_SSH }}
-       SOURCE: 'dist/'
+       SOURCE: 'test/'
        TARGET: ${{ secrets.REMOTE_PATH }}
      
