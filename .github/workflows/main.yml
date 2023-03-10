@@ -21,6 +21,6 @@ jobs:
        REMOTE_HOST: ${{ secrets.MY_HOST }}
        REMOTE_USER: ${{ secrets.MY_USERNAME }}
        REMOTE_PORT: ${{ secrets.MY_PORT }}
-       SSH_PASSWORD: ${{ secrets.GIT_TOKEN }}
+       SSH_PASSWORD: ${{ secrets.MY_TOKEN }}
        SOURCE: 'test/'
        TARGET: ${{ secrets.REMOTE_PATH }}
