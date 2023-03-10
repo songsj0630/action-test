@@ -1,0 +1,27 @@
+name: Deploy to Rocky Linux server
+on:
+  push:
+    branches: [main] 
+  workflow_dispatch: 
+env:
+  SSH_PRIVATE_KEY: ${{ secrets.my_ssh }} 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.5.0
+        with:
+          ssh-private-key: ${{ env.my_ssh }}
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y ansible
+
+      - name: Run Ansible playbook
+        run: ansible-playbook ansible/playbook.yml -i ansible/inventory.ini
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: "False"
