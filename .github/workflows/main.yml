@@ -24,6 +24,6 @@ jobs:
        REMOTE_PASSWORD: ${{ secrets.MY_PASS }}
        REMOTE_PORT: ${{ secrets.MY_PORT }}
        SSH_PRIVATE_KEY: ${{ secrets.MY_SSH }}
-       SOURCE: /root/test
+       SOURCE: 'dist/'
        TARGET: ${{ secrets.REMOTE_PATH }}
      
