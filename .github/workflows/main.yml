@@ -10,16 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2.4.2
+    - uses: actions/checkout@v3.2.0
 
     - name: Deploy to server
-      uses: easingthemes/ssh-deploy@v3.0.0
+      uses: easingthemes/ssh-deploy@v3.1.1
       env:
         SSH_PRIVATE_KEY: ${{ secrets.MY_SSH }}
         ARGS: "-rltgoDzvO --delete" # Optional, pass additional arguments to rsync
       with:
-        server: ${{ secrets.MY_HOST }}
-        username: ${{ secrets.MY_USERNAME }}
-        port: ${{ secrets.MY_PORT }}
-        remote_path: ${{ secrets.REMOTE_PATH }}
+       REMOTE_HOST: ${{ secrets.MY_HOST }}
+       REMOTE_USER: ${{ secrets.MY_USERNAME }}
+       REMOTE_PORT: ${{ secrets.MY_PORT }}
+       SSH_PRIVATE_KEY: ${{ secrets.MY_SSH }}
+       SOURCE: /root/test
+       TARGET: ${{ secrets.REMOTE_PATH }}
      
