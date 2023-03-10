@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v2.4.2
 
     - name: Deploy to server
-      uses: easingthemes/ssh-deploy@v2.2.12
+      uses: easingthemes/ssh-deploy@v3.0.0
       env:
         SSH_PRIVATE_KEY: ${{ secrets.MY_SSH }}
         ARGS: "-rltgoDzvO --delete" # Optional, pass additional arguments to rsync
