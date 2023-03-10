@@ -21,10 +21,10 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - naem: chechout
+      - name: chechout
         uses: actions/checkout@v3.2.0
         
-      - name:
+      - name: test_ssh
         uses: ./
         with:
           host: ${{ secrets.MY_HOST }}
