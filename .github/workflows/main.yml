@@ -1,8 +1,8 @@
-name: ssh
+name: ssh-test
 
 on: [push]
-  
 jobs:
+
   build:
     name: Build
     runs-on: ubuntu-latest
