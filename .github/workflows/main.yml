@@ -1,0 +1,16 @@
+name: update
+
+on:
+  push:
+  pull_request:
+
+  jobs:
+    build_and_test :
+        runs-on: centos-latest
+
+    steps:
+     - name: npm
+       run: yum install npm -y
+
+     - name: cd
+       run: cd /home/ 
