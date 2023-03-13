@@ -1,14 +1,14 @@
 name: update
 
-on:
-  push:
-  pull_request:
-
+on: [push]
+  
 jobs:
   build_and_test :
+
     runs-on: centos-latest
 
     steps:
+    #- uses: actions/checkout@v2
       - name: npm
         run: sudo yum install npm -y
 
