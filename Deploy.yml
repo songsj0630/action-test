@@ -1,0 +1,20 @@
+name: Deploy code to Ansible hosts
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+      - name: Deploy code using Ansible
+        run: |
+          ansible-playbook -i inventory.ini deploy.yml -e "target_hosts={{ target_hosts }}"
+        env:
+          ANSIBLE_PRIVATE_KEY: ${{ secrets.ANSIBLE_PRIVATE_KEY }}
